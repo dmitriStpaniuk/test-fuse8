@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${montserrat.variable} ${firaSans.variable} antialiased min-w-[320px] max-w-[1920px] w-full mx-auto px-4 md:px-6 xl:px-8`}
+        className={`${montserrat.variable} ${firaSans.variable} mx-auto w-full min-w-[320px] max-w-[1920px] px-4 antialiased md:px-6 xl:px-8`}
       >
         {children}
       </body>
