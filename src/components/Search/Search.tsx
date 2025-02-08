@@ -19,17 +19,25 @@ const Search = () => {
         <p className="pl-7 font-montserrat text-[14px] font-extralight text-[#282626] md:text-[16px]">
           Found characters: {result.info.count}
         </p>
-      </div>
-      <div>
-        {status === "idle" && <p className="pl-7 font-montserrat text-[14px] font-extralight text-[#282626] md:text-[16px]">Enter the 3 symbols</p>}
-        {status === "loading" && <div>Загрузка...</div>}
 
+        {status === "idle" && (
+          <p className="pl-4 font-montserrat text-[12px] font-extralight text-[#282626] md:pl-7 md:text-[14px] lg:text-[16px] ">
+            Enter the 3 symbols
+          </p>
+        )}
+
+        {status === "loading" && (
+          <div className="pl-4 font-montserrat text-[12px] md:pl-7 md:text-[14px] lg:text-[16px]">
+            Загрузка...
+          </div>
+        )}
 
         {status === "error" && (
-          <div className="border-r-2 bg-[#fee2e2] p-1 text-red-500">
+          <div className="mx-4 rounded-md bg-[#fee2e2] p-2 text-[12px] text-red-500 md:mx-7 md:p-3 md:text-[14px] lg:text-[16px]">
             {error}
           </div>
         )}
+
         {result.results.length > 0 && <CardList characters={result.results} />}
       </div>
     </>

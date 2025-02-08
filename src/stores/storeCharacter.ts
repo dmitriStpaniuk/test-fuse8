@@ -57,6 +57,14 @@ export const useSearchStore = create<SearchState>((set, get) => ({
 
   setSearchTerm: (term) => {
     set({ searchTerm: term });
+    // дропаем стор при пустом поле поиска
+    if (term.length < 3) {
+      set({
+        result: initialState,
+        status: "idle",
+      });
+      return;
+    }
 
     // Дебаунс с очисткой
     clearTimeout(get().timerId);
