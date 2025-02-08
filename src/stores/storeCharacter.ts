@@ -1,5 +1,5 @@
 import { searchCharacters } from "@/api/rickiAndMorty";
-import { CharacterResponse } from "@/models/caracter";
+import { Character, CharacterResponse } from "@/models/character";
 import { create } from "zustand";
 
 interface SearchState {
@@ -8,8 +8,13 @@ interface SearchState {
   result: CharacterResponse;
   error: string | null;
   status: "idle" | "loading" | "success" | "error";
+  currentPage: number;
   setSearchTerm: (term: string) => void;
-  searchCharacters: () => Promise<void>;
+  searchCharactersByName: (page: number) => Promise<void>;
+  searchCharacterById: (id: string) => Character | undefined;
+  setPage: (page: number) => void;
+  nextPage: () => void;
+  prevPage: () => void;
 }
 
 const initialState = {
@@ -26,6 +31,29 @@ export const useSearchStore = create<SearchState>((set, get) => ({
   error: null,
   status: "idle",
   timerId: undefined,
+  currentPage: 1,
+
+  setPage: (page) => {
+    set({ currentPage: page });
+    get().searchCharactersByName(page);
+  },
+  nextPage: () => {
+    const { currentPage, result } = get();
+    if (result.info.next) {
+      const nextPage = currentPage + 1;
+      set({ currentPage: nextPage });
+      get().searchCharactersByName(nextPage);
+    }
+  },
+
+  prevPage: () => {
+    const { currentPage, result } = get();
+    if (result.info.prev) {
+      const prevPage = currentPage - 1;
+      set({ currentPage: prevPage });
+      get().searchCharactersByName(prevPage);
+    }
+  },
 
   setSearchTerm: (term) => {
     set({ searchTerm: term });
@@ -34,21 +62,35 @@ export const useSearchStore = create<SearchState>((set, get) => ({
     clearTimeout(get().timerId);
     const timer = setTimeout(async () => {
       if (term.length >= 3) {
-        await get().searchCharacters();
+        await get().searchCharactersByName(get().currentPage);
       }
     }, 500);
 
     set({ timerId: timer }); // Сохраняем ID таймера
   },
 
-  searchCharacters: async () => {
+  searchCharacterById: (id) => {
+    console.log(`zustandt: ${id}`);
+    const character = get().result.results.find(
+      (character) => character.id === Number(id)
+    );
+    console.log(`zustandt: ${character}`);
+
+    if (!character) {
+      set({ status: "error", error: "Character not found" });
+      return undefined;
+    }
+    return character;
+  },
+
+  searchCharactersByName: async (page) => {
     const term = get().searchTerm;
     if (term.length < 3) return;
 
     set({ status: "loading", error: null });
 
     try {
-      const { data, error } = await searchCharacters(term);
+      const { data, error } = await searchCharacters(term, page);
 
       if (error || !data) {
         set({

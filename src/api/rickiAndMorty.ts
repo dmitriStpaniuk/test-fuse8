@@ -1,27 +1,15 @@
-import { CharacterResponse, SearchResult } from "@/models/caracter";
+import { CharacterResponse, SearchResult } from "@/models/character";
 
 export async function searchCharacters(
   name: string,
   page: number = 1
 ): Promise<SearchResult<CharacterResponse>> {
-
   try {
     const response = await fetch(
-      `https://rickandmortyapi.com/api/character/?name=${encodeURIComponent(name)}&page=${page}`,
-      {
-        next: { revalidate: 60 }, // ISR на 60 секунд
-      }
+      `https://rickandmortyapi.com/api/character/?name=${encodeURIComponent(
+        name
+      )}&page=${page}`
     );
-
-    // Обработка HTTP ошибок
-    // if (!response.ok) {
-    //   const errorData = await response.json();
-    //   return {
-    //     data: null,
-    //     error: errorData.message || "Failed to fetch characters",
-    //     status: response.status,
-    //   };
-    // }
 
     const data: CharacterResponse = await response.json();
 
@@ -34,7 +22,6 @@ export async function searchCharacters(
       };
     }
 
-
     return { data, error: null, status: 200 };
   } catch (error) {
     // Обработка сетевых ошибок
@@ -46,3 +33,4 @@ export async function searchCharacters(
     };
   }
 }
+
