@@ -21,7 +21,7 @@ const CharacterPage = () => {
 
   return (
     <div className="container mx-auto p-4 md:p-8">
-      <div className="overflow-hidden rounded-lg bg-white shadow-lg">
+      <div className="mx-auto max-w-4xl overflow-hidden rounded-lg bg-white shadow-lg">
         <div className="flex flex-col md:flex-row">
           <div className="w-full md:w-11/12">
             <Image 
