@@ -78,11 +78,9 @@ export const useSearchStore = create<SearchState>((set, get) => ({
   },
 
   searchCharacterById: (id) => {
-    console.log(`zustandt: ${id}`);
     const character = get().result.results.find(
       (character) => character.id === Number(id)
     );
-    console.log(`zustandt: ${character}`);
 
     if (!character) {
       set({ status: "error", error: "Character not found" });
