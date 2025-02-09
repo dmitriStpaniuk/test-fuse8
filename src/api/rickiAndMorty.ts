@@ -1,5 +1,12 @@
-import { CharacterResponse, SearchResult } from "@/models/character";
+import { Character, CharacterResponse, SearchResult } from "@/models/character";
+export async function generateStaticParams() {
+  const res = await fetch("https://rickandmortyapi.com/api/character");
+  const data = await res.json();
 
+  return data.results.map((character: Character) => ({
+    id: character.id.toString(),
+  }));
+}
 export async function searchCharacters(
   name: string,
   page: number = 1
