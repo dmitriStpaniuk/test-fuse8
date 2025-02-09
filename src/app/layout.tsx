@@ -3,7 +3,7 @@ import { Montserrat, Fira_Sans } from "next/font/google";
 import "./globals.css";
 
 const firaSans = Fira_Sans({
-  weight: ['400', '700'],
+  weight: ["400", "700"],
   variable: "--font-fira-sans",
   subsets: ["latin"],
 });
@@ -17,9 +17,6 @@ export const metadata: Metadata = {
   title: "DemoFuse8",
   description: "DemoFuse8",
 };
-
-
-
 
 export default function RootLayout({
   children,
